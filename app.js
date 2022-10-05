@@ -15,11 +15,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Register the location for handlebars partials here:
 
 // ...
+hbs.registerPartials(path.join(__dirname, 'views/partials'));
 
 // Add the route handlers here:
 
 app.get('/', (req, res) => {
   res.render('index');
+});
+
+app.get('/beers', async (req, res) => {
+  const beersArr =  await punkAPI.getBeers();
+  res.render("beers", {beers: beersArr});
+});
+
+app.get('/random-beer', async (req, res) => {
+  const randomBeerArr =  await punkAPI.getRandom();
+  console.log(randomBeerArr)
+  // let object = {randomBeer: randomBeerArr};
+  // console.log(' dimelo >? ', object);
+  res.render("random-beer", {randomBeer: randomBeerArr});
 });
 
 app.listen(3000, () => console.log('🏃‍ on port 3000'));
